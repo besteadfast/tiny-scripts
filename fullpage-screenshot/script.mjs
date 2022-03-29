@@ -6,7 +6,7 @@ const DEFAULT_WIDTH = 1440
 const DEFAULT_HEIGHT = 1000
 const HEADLESS_MODE = true
 
-(async () => {
+;(async () => {
 	console.log(`📸 taking snapshot of: ${PAGE_URL}`)
 
   const browser = await puppeteer.launch({ headless: HEADLESS_MODE })
