@@ -1,12 +1,20 @@
 import puppeteer from 'puppeteer'
 import { jsPDF } from 'jspdf'
 
+// Configuration
+
 const PAGE_URL = 'https://bauschandlomb.steadfa.st?token=password'
 const DEFAULT_WIDTH = 1440
 const DEFAULT_HEIGHT = 1000
 const HEADLESS_MODE = true
 
-;(async () => {
+function preSnapshotManipulations() {
+	// document.body.style.backgroundColor = 'red'
+}
+
+// Script
+
+(async () => {
 	console.log(`📸 taking snapshot of: ${PAGE_URL}`)
 
   const browser = await puppeteer.launch({ headless: HEADLESS_MODE })
@@ -17,9 +25,17 @@ const HEADLESS_MODE = true
 
 	const renderedPageHeight = await page.evaluate(() => {
     return document.documentElement.scrollHeight
-  });
+  })
 
 	await page.setViewport({ width: DEFAULT_WIDTH, height: renderedPageHeight })
+
+	/*
+		Sometimes we want to make changes on the page before taking the snapshot
+		This is useful for things like opening accordion items, switching tabs, etc.
+	*/
+	if(preSnapshotManipulations) {
+		await page.evaluate(preSnapshotManipulations)
+	}
 
   const screenshot = await page.screenshot()
 
