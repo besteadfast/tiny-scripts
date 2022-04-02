@@ -8,12 +8,17 @@
 1. 💰 Profit (find the snapshot at */snapshot.pdf*)
 
 ## Configuration
-There are 4 possible configuration variables at the top of the file.
+There are 4 possible configuration variables at the top of the file, and one configurable function
 ```js
 const PAGE_URL = 'https://bauschandlomb.steadfa.st?token=password'
 const DEFAULT_WIDTH = 1440
 const DEFAULT_HEIGHT = 1000
 const HEADLESS_MODE = true
+const HEADLESS_MODE = true
+
+function preSnapshotManipulations() {
+	document.body.style.backgroundColor = 'red'
+}
 ```
 
 ### Page URL *(string)*
@@ -29,6 +34,11 @@ This is the width in height that the page will **initally** be rendered at. **Bu
 **Default: true**
 
 You can set this to `true` if you want to actually *see* the browser instance used to generate the snapshot. Mostly helpful for debugging purposes.
+
+### Pre-Snapshot Manipulations
+This function can be used to make changes to the DOM of the page that was loaded. This is useful for doing things like opening accordion items, clicking buttons, and switching tabs.
+
+The function defined for this gets passed directly to Puppeteer's [`page.evaluate`](https://pptr.dev/#?product=Puppeteer&version=v13.5.2&show=api-pageevaluatepagefunction-args), so you can access any variables available in that method.
 
 ## Under the hood
 - We're using [Puppeteer](https://github.com/puppeteer/puppeteer) for this, which is a Chromium simulator. It is essentially an instance of Chromium, and gives you an API to make that Chromium browser do things. So, we're creating a browser instance, navigating to a page, resizing the browser window to fit all of the page content, and then taking a screenshot.
